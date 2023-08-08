@@ -1,4 +1,4 @@
-<font size = 1 color='red'>FinancialPortfolio</font>
+<font size = 1 >FinancialPortfolio</font>
 <font size =3>
 This project is the final project presentation of the 20th team of neuade, and the theme of the project is financial portfolio.
 We use Augular+SpringBoot+MySQL to manage portfolios of one or more financial products.
