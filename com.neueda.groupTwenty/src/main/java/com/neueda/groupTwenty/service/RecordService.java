@@ -64,6 +64,11 @@ public class RecordService {
         return recordRepo.count();
     }
 
+//    //查询所有持有的基金，即funds_count不为0的基金
+//    public List<Record> getAllRecordWithFundsNotZero(){
+//
+//    }
+
 
 
 }

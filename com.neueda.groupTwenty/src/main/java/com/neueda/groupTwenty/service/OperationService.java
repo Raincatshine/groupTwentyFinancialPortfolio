@@ -73,7 +73,7 @@ public class OperationService {
         //get the newest operation record to get the last current asset
         Operation lastOperation = operationRepo.findLastData();
 
-        Double fundsCurrentPrice = productRepo.getCurrentPrice(fundsId);//today ,newest
+        Double fundsCurrentPrice = productRepo.getCurrentPrice(fundsId).getCurrentPrice();//today ,newest
 
 
         //calculate the cost

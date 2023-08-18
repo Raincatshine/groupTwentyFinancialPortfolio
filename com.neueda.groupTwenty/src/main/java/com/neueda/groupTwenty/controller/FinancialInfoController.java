@@ -35,6 +35,10 @@ public class FinancialInfoController {
     @Autowired
     private ProductService productService;
 
+    /***
+     * 获得当前账户信息，包括现有资产
+     * @return
+     */
     @GetMapping("/account")
     public OperationDto getCurrentAccountInfo(){
         //get sum injection assets
@@ -57,13 +61,22 @@ public class FinancialInfoController {
         return operationDto;
     }
 
+    /**
+     * 获得record中记录的所有基金信息，其中count>0表示拥有，0表示未购买
+     * @return
+     */
     @GetMapping("/funds")
     public List<Record> getAllRecordData(){
        return recordService.getAllRecord();
     }
 
-    @GetMapping("/count/{operationProductID}")
-    public HashMap<Date,Integer> getFundsCountChangeWithDate(@PathVariable Integer operationProductID){
+    /**
+     * 获得某支基金，随着时间变化购买的变化，主要对operation表进行查询
+     * @param operationProductID
+     * @return
+     */
+    @GetMapping("/count")
+    public HashMap<Date,Integer> getFundsCountChangeWithDate(@RequestParam Integer operationProductID){
 
         List<Object[]> result = operationRepo.findFundsCountChangeWithDate(operationProductID);
         HashMap<Date, Integer> resultMap = new HashMap<>();
@@ -81,6 +94,12 @@ public class FinancialInfoController {
         return resultMap;
     }
 
+    /***
+     * 卖出基金
+     * @param id
+     * @param fundsCount
+     * @return
+     */
     @PostMapping("/sell")
     public Boolean sellFunds(@RequestParam Integer id, @RequestParam Double fundsCount){
         //the number of fundsCount of this fund is more than the sell number
@@ -92,7 +111,6 @@ public class FinancialInfoController {
             newRecord.setFundsCount(oldRecord.getFundsCount()-fundsCount);
             newRecord.setUpdateTime(new Date());
 
-            recordService.updateRecord(id,newRecord);
 
 
             //add an item in operation
@@ -107,6 +125,13 @@ public class FinancialInfoController {
             List<Double> assetList = operationService.calculateCurrentAsset(fundsCount,false,id);
             Double newCurrentAssets = assetList.get(0);
             newOperation.setCurrentAssets(newCurrentAssets);
+
+
+
+            //change purchase_cost, here ,we sell funds ,so we oldPurchaseCost-spread
+            newRecord.setPurchaseCost(oldRecord.getPurchaseCost()-assetList.get(1));
+
+            recordService.updateRecord(id,newRecord);
             operationService.addOperation(newOperation);
 
             return true;
@@ -115,6 +140,12 @@ public class FinancialInfoController {
         }
     }
 
+    /***
+     * 买入基金
+     * @param id
+     * @param fundsCount
+     * @return
+     */
     @PostMapping("/buy")
     public Boolean buyFunds(@RequestParam Integer id, @RequestParam Double fundsCount) {
 
@@ -172,6 +203,11 @@ public class FinancialInfoController {
         }
     }
 
+    /***
+     * 为账户注入资金
+     * @param injectionAmount
+     * @return
+     */
     @PostMapping("/injection")
     public Operation injectionAssets(@RequestParam Double injectionAmount){
         Operation newOperation = new Operation();
@@ -186,6 +222,11 @@ public class FinancialInfoController {
     }
 
 
+    /***
+     * 从账户撤出资金
+     * @param withdrawAmount
+     * @return
+     */
     @PostMapping("/withdraw")
     public Operation withdrawAssets(@RequestParam Double withdrawAmount){
         Operation newOperation = new Operation();
