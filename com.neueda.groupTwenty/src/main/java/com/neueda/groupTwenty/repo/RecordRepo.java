@@ -10,7 +10,10 @@ import java.util.List;
 @Repository
 public interface RecordRepo extends JpaRepository<Record,Integer> {
 
-    @Query("SELECT r.id,r.fundsCount,r.purchaseCost FROM Record r WHERE r.fundsCount>0.0")
+    @Query("SELECT r.id,r.fundsName,r.fundsCount,r.purchaseCost FROM Record r WHERE r.fundsCount>0.0")
     List<Object[]> getAllRecordWithFundsNotZero();
+
+    @Query("SELECT r FROM Record r WHERE r.fundsCount>0.0")
+    List<Record> getRecordWithFundsNotZero();
 
 }

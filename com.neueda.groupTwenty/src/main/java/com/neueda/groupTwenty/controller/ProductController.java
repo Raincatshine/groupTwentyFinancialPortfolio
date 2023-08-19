@@ -37,38 +37,49 @@ public class ProductController {
      * @return
      */
     @GetMapping("/fundsprofit")
-    public HashMap<Integer,Double> getFundsBenefit(){
+    public List<Object[]> getFundsBenefit(){
         //return product_id and benefit
         //r.id,r.fundsCount,r.purchaseCost
         //get the purchase_cost and funds_count
         List<Object[]> fundsRecordNotZero = recordRepo.getAllRecordWithFundsNotZero();
+        List<Object[]> result = new ArrayList<>();
 
         if (fundsRecordNotZero.isEmpty()){
             return null;
         }else {
 
-            HashMap<Integer,Double> hashMapWithIdAndBenefit = new HashMap<>();
+
+           // HashMap<String,Double> hashMapWithIdAndBenefit = new HashMap<>();
             Double sumBenefit = 0.0;
             //calculate the benefit by current_price*funds_count-purchase_cost
             for (Object[] row : fundsRecordNotZero) {
 
+                Object[] template = new Object[3];
                 Integer fundsId = ((Number)row[0]).intValue();
+
+                String fundsName = row[1].toString();
+
                 //get the current_price today
                 Double currentPrice = productRepo.getCurrentPrice(fundsId).getCurrentPrice();
 
                 //calculate the benefit
-                Double singleFundBenefit = currentPrice*((Number)row[1]).doubleValue()-((Number)row[2]).doubleValue();
+                Double singleFundBenefit = currentPrice*((Number)row[2]).doubleValue()-((Number)row[3]).doubleValue();
 
                 //calculate the sumBenefit
                 sumBenefit+=singleFundBenefit;
                 //store the data
-                hashMapWithIdAndBenefit.put(fundsId,singleFundBenefit);
+                template[0] = fundsId;
+                template[1] = fundsName;
+                template[2] = singleFundBenefit;
+                result.add(template);
+ //               hashMapWithIdAndBenefit.put(fundsId+":"+fundsName,singleFundBenefit);
 
             }
             //put the sum benefit into the hashmap
-            hashMapWithIdAndBenefit.put(0,sumBenefit);
+            result.add(new Object[]{0,"sumBenefit",sumBenefit});
+ //           hashMapWithIdAndBenefit.put("0:sumBenefit",sumBenefit);
 
-            return hashMapWithIdAndBenefit;
+            return result;
         }
 
     }
@@ -78,14 +89,9 @@ public class ProductController {
  *
  * */
     @GetMapping("/profitrate")
-    public HashMap<Date,Double> getAllProductByProductId(@RequestParam Integer productId){
-        List<Product> allProductWithProductId = productRepo.getProductByProductId(productId);
-        HashMap<Date,Double> reaultWithDateAndGrowthRate = new HashMap<>();
-        for (Product row : allProductWithProductId){
-            reaultWithDateAndGrowthRate.put(row.getDateTime(),row.getGrowthRate());
-        }
-
-        return reaultWithDateAndGrowthRate;
+    public List<Object[]> getAllProductByProductId(@RequestParam Integer productId){
+        List<Object[]> productPriceWithProductId = productRepo.getProductGrowthChangeByProductId(productId);
+        return productPriceWithProductId;
     }
 /**
  *
@@ -93,13 +99,9 @@ public class ProductController {
  *
  * */
     @GetMapping("/fundsprice")
-    public HashMap<Date,Double> getFundsPriceChangeWithTimeById(@RequestParam Integer productId){
-        List<Product> productWithProductId = productRepo.getProductByProductId(productId);
-        HashMap<Date,Double> reaultWithDateAndPrice = new HashMap<>();
-        for (Product row : productWithProductId){
-            reaultWithDateAndPrice.put(row.getDateTime(),row.getCurrentPrice());
-        }
-        return reaultWithDateAndPrice;
+    public List<Object[]> getFundsPriceChangeWithTimeById(@RequestParam Integer productId){
+        List<Object[]> productGrowthWithProductId = productRepo.getProductPriceChangeByProductId(productId);
+        return productGrowthWithProductId;
     }
 
     /**

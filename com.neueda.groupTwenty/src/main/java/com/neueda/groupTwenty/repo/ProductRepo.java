@@ -19,6 +19,9 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
 
 //    Optional<Product> findTopByDateTimeBeforeOrderByDateTimeDesc(Date currentDate);
 
-    @Query("SELECT p FROM Product p WHERE p.productID = :productId")
-    List<Product> getProductByProductId(Integer productId);
+    @Query("SELECT p.dateTime,p.currentPrice FROM Product p WHERE p.productID = :productId ORDER BY p.dateTime DESC ")
+    List<Object[]> getProductPriceChangeByProductId(Integer productId);
+
+    @Query("SELECT p.dateTime,p.growthRate FROM Product p WHERE p.productID = :productId ORDER BY p.dateTime DESC ")
+    List<Object[]> getProductGrowthChangeByProductId(Integer productId);
 }

@@ -61,7 +61,8 @@ public class RecordService {
 
     //返回record的记录条数，即买入的基金种类总数
     public long getFundsTypeCount(){
-        return recordRepo.count();
+        List<Object[]> recorListNotZero = recordRepo.getAllRecordWithFundsNotZero();
+        return recorListNotZero.size();
     }
 
 //    //查询所有持有的基金，即funds_count不为0的基金

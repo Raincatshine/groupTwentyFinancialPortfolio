@@ -21,7 +21,7 @@ public interface OperationRepo extends JpaRepository<Operation,Integer> {
     Operation findLastData(); //获得最后一个id对应的数据
 
 
-     @Query("SELECT o.operationTime, o.operationCount FROM Operation o WHERE o.operationProductID = :operationProductID ORDER BY o.operationTime")
+     @Query("SELECT o.operationTime, o.operationCount FROM Operation o WHERE o.operationProductID = :operationProductID ORDER BY o.operationTime DESC ")
     List<Object[]> findFundsCountChangeWithDate(Integer operationProductID);
 
 }

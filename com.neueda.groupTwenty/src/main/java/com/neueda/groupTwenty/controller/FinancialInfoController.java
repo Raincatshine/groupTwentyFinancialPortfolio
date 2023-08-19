@@ -1,9 +1,12 @@
 package com.neueda.groupTwenty.controller;
 
+import com.neueda.groupTwenty.dto.FundsDto;
 import com.neueda.groupTwenty.dto.OperationDto;
 import com.neueda.groupTwenty.entity.Operation;
 import com.neueda.groupTwenty.entity.Record;
 import com.neueda.groupTwenty.repo.OperationRepo;
+import com.neueda.groupTwenty.repo.ProductRepo;
+import com.neueda.groupTwenty.repo.RecordRepo;
 import com.neueda.groupTwenty.service.OperationService;
 import com.neueda.groupTwenty.service.ProductService;
 import com.neueda.groupTwenty.service.RecordService;
@@ -11,6 +14,7 @@ import com.neueda.groupTwenty.tool.PropertyType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,9 @@ public class FinancialInfoController {
     private RecordService recordService;
 
     @Autowired
+    private RecordRepo recordRepo;
+
+    @Autowired
     private OperationService operationService;
 
     @Autowired
@@ -34,6 +41,9 @@ public class FinancialInfoController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductRepo productRepo;
 
     /***
      * 获得当前账户信息，包括现有资产
@@ -51,9 +61,9 @@ public class FinancialInfoController {
         OperationDto operationDto = new OperationDto();
         operationDto.setId(0);
         operationDto.setFundsTypeCount(recordService.getFundsTypeCount());
-        operationDto.setExpenseAssets(expenseAssets);
-        operationDto.setSumAssets(injectionAsset);
-        operationDto.setCurrentAssets(lastOperationRecord.getCurrentAssets());
+        operationDto.setExpenseAssets(expenseAssets); //支出
+        operationDto.setSumAssets(injectionAsset); //注入资金总和
+        operationDto.setCurrentAssets(lastOperationRecord.getCurrentAssets()); //现有资金
         operationDto.setOperationCount(0.0);
         operationDto.setOperationProductID(0);
         operationDto.setOperationTime(new Date());
@@ -62,12 +72,25 @@ public class FinancialInfoController {
     }
 
     /**
-     * 获得record中记录的所有基金信息，其中count>0表示拥有，0表示未购买
+     * 获得record中记录的持有基金和基金的目前价格
      * @return
      */
     @GetMapping("/funds")
-    public List<Record> getAllRecordData(){
-       return recordService.getAllRecord();
+    public List<FundsDto> getAllRecordData(){
+        List<Record> recordsData = recordRepo.getRecordWithFundsNotZero();
+        List<FundsDto> result = new ArrayList<>();
+        for (Record row : recordsData){
+            FundsDto template = new FundsDto();
+            template.setId(row.getId());
+            template.setFundsCount(row.getFundsCount());
+            template.setPurchaseCost(row.getPurchaseCost());
+            template.setUpdateTime(row.getUpdateTime());
+            template.setFundsName(row.getFundsName());
+            template.setPurchaseTime(row.getPurchaseTime());
+            template.setCurrentPrice(productRepo.getCurrentPrice(row.getId()).getCurrentPrice());
+            result.add(template);
+        }
+       return result;
     }
 
     /**
@@ -76,22 +99,11 @@ public class FinancialInfoController {
      * @return
      */
     @GetMapping("/count")
-    public HashMap<Date,Integer> getFundsCountChangeWithDate(@RequestParam Integer operationProductID){
+    public List<Object[]> getFundsCountChangeWithDate(@RequestParam Integer operationProductID){
 
         List<Object[]> result = operationRepo.findFundsCountChangeWithDate(operationProductID);
-        HashMap<Date, Integer> resultMap = new HashMap<>();
-        int total = 0;
 
-        for (Object[] row : result) {
-            Date date = (Date) row[0];
-            Integer count = ((Number) row[1]).intValue();
-
-            total += count; // Accumulate the count
-
-            resultMap.put(date, total); // Store the accumulated count in the map
-        }
-
-        return resultMap;
+        return result;
     }
 
     /***
