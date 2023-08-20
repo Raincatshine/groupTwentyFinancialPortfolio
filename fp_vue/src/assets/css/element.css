@@ -1,0 +1,9 @@
+/* 重设部分element的css */
+
+.el-menu{
+    border: 0;
+}
+
+.el-dialog{
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
