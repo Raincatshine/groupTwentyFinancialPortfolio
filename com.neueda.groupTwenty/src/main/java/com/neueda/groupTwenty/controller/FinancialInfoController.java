@@ -102,6 +102,12 @@ public class FinancialInfoController {
     public List<Object[]> getFundsCountChangeWithDate(@RequestParam Integer operationProductID){
 
         List<Object[]> result = operationRepo.findFundsCountChangeWithDate(operationProductID);
+        Double currentCount = 0.0;
+        for (Object[] row:result){
+            Double change = ((Number)row[1]).doubleValue();
+            currentCount+=change;
+            row[1]=currentCount;
+        }
 
         return result;
     }
