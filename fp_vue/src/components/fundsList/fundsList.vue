@@ -102,7 +102,7 @@ export default {
             // 分页
 
             currentPage: 1, // 当前页码
-            pageSize: 4, // 每页的数据条数
+            pageSize: 5, // 每页的数据条数
         }
     },
 
@@ -111,6 +111,7 @@ export default {
 
     },
     methods:{
+        // 获取持有基金
         async getFundsInfo(){
             let res =await this.$request.get('/api/financialinfo/funds',{});
             res.data.forEach(item => {
@@ -125,11 +126,13 @@ export default {
 
         clickBuyBtn(index){
             this.buyFormVisible= true;
-            this.selectIndex =index;
+            this.selectIndex =index+(this.currentPage-1)*this.pageSize;
+            // console.log(this.fundsdata[this.selectIndex].id);
         },
         clickSellBtn(index){
-            this.selectIndex =index;
+            this.selectIndex =index+(this.currentPage-1)*this.pageSize;
             this.sellFormVisible =true;
+            // console.log(this.fundsdata[this.selectIndex].id);
         },
         async buyFund(id){
             //TODO post index和count给接口,更新总资产和余额

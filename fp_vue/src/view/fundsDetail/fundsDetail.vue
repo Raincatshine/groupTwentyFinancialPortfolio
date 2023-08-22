@@ -13,7 +13,7 @@
     <!-- input -->
       <el-input 
             v-model="searchid" 
-            placeholder="Search"
+            placeholder="Search ID"
             prefix-icon="el-icon-search"
       ></el-input>
       <el-button type="primary" @click="clickSearchBtn">Search</el-button>

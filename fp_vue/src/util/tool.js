@@ -8,7 +8,11 @@ export function changeDecimalToPercentage(data) {
 
 // 格式化时间
 export function formatTime(origintime,type){
+    //后端返回的是T16:00:00.000,
+    //北京时间：2020-01-14 00:00:00对应的国际标准时间格式为：2020-01-13T16:00:00.000Z
     return moment(origintime).format(type);
+
+
 }
 
 // 科学计数法转换数字

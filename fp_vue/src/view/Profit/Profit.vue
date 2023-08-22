@@ -6,16 +6,18 @@
         <el-button type="primary" @click="isShowDetail=!isShowDetail">Profit Detail</el-button>
       </div>
       <div class="profitdetail" v-show="isShowDetail" >
-      <ul class="detailbox">
-        <li v-for="(item,index) in profitarray" :key="index"> {{ item.name }} profit is: {{ item.profit }}</li>
-      </ul>
+        <div class="profitdetail-content" >
+        <ul class="detailbox">
+          <li v-for="(item,index) in profitarray" :key="index"> {{ item.name }} profit is: {{ item.profit }}</li>
+        </ul>
+        </div>
       </div>
     </div>
     <h3>Profit Line</h3>
     <!-- input -->
     <el-input 
             v-model="searchid" 
-            placeholder="Search"
+            placeholder="Search ID"
             prefix-icon="el-icon-search"
       ></el-input>
       <el-button type="primary" @click="clickSearchBtn">Search</el-button>
@@ -124,15 +126,19 @@ export default {
 
 .profitdetail{
   width: 65%;
-  height: 150px;
   margin-left: 5%;
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   border-radius: 30px;
-
+  overflow: hidden;
+}
+.profitdetail-content{
+  height: 150px;
+  overflow-y: auto;
 }
 .detailbox{
-  margin: 20px 0 0 20px;
+  margin: 20px 0 20px 20px;
+  height: 150px;
 }
 .detailbox li{
   line-height: 20px;

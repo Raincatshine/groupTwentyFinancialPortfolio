@@ -5,7 +5,7 @@
     <!-- input -->
     <el-input 
             v-model="searchid" 
-            placeholder="Search"
+            placeholder="Search ID"
             prefix-icon="el-icon-search"
             type="number"
       ></el-input>
@@ -116,20 +116,24 @@ export default {
         },
 
         clickBuyBtn(index){
-            this.selectIndex=index;
+            this.selectIndex=index+(this.currentPage-1)*this.pageSize;
             this.buyFormVisible =true;
+            // console.log(this.marketfunds[this.selectIndex].id);
         },
 
         async buyFund(){
             //传id、count给后台，增加
+            
             let res =await this.$request.postWithParams('api/financialinfo/buy',{
-                id:this.selectIndex+1,
+                id:this.marketfunds[this.selectIndex].id,
                 fundsCount:this.buyform.count
             });
+            
 
             if(res.data){
                 //返回true
                 this.$message.success('Buy Fund Successfully');
+                this.buyFormVisible =false;
                 
             }
         },
@@ -154,13 +158,13 @@ export default {
         // 分页
         //每页条数改变时触发 选择一页显示多少行
         handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
+            // console.log(`每页 ${val} 条`);
             this.currentPage = 1;
             this.pageSize = val;
         },
         //当前页改变时触发 跳转其他页
         handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
+            // console.log(`当前页: ${val}`);
             this.currentPage = val;
         }
 
@@ -169,7 +173,7 @@ export default {
         cost(){
             let cost =this.marketfunds[this.selectIndex].currentPrice * this.buyform.count;
             if(cost>=0){
-                return cost;
+                return cost.toFixed(2);
             }else{
                 this.$message("Error,count can't be nagetive");
                 return 0;

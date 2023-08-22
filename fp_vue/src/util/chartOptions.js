@@ -2,7 +2,7 @@
 // 数量折线图
 export const countLine ={
     title:{
-        text:"test charts",
+        text:"Hoding Counts",
         left:"center",
         top:20,
         textStyle:{
@@ -19,13 +19,13 @@ export const countLine ={
         containLabel:true
 
     },
-    legend:{
-        data:["销量"],
-        top:20,
-        right:200
-    },
+    // legend:{
+    //     data:["Count"],
+    //     top:20,
+    //     right:200
+    // },
     xAxis:{
-        data:["衬衫","羊毛"]
+        data:[0]
     },
     yAxis:{
        
@@ -34,7 +34,7 @@ export const countLine ={
         {
             name:"销量",
             type:"line",
-            data:[10,20]
+            data:[0]
         }
     ]
 }
@@ -42,7 +42,7 @@ export const countLine ={
 // 资产饼图
 export const propertyPie = {
     title: {
-        text: 'Aeests',
+        text: 'Assets',
         top:20,
         left: 'center'
       },
