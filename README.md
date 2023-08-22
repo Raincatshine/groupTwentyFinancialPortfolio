@@ -74,6 +74,82 @@
 
      <font size = 3 >
      <font color ='#87CEFA'><b>Market Module</b></font> : In this module . Users can scan all of the product and the information of products . For the Operation Function ,they can only buy. <br>
-     
      </font>
-  
+
+     &nbsp; 
+     # Database Design
+
+     <font size = 4 >Based on the above requirement analysis and data requirements, we think that designing three database tables can meet our needs.<br>
+
+     The following is our tables for our project and we will explain the fields in detail.</font>
+
+     1.<font size =4>RECORD TABLE</font>
+     |  ID    | FIELD NAME   |  FIELD TYPE    |  NOT NUll |      PRIMARY KEY | 
+     |  ----  | ----         |   ----         |   -----     |         ----     |  
+     |  1     | ID       |      INT          |   YES      |    YES|
+     |  2     | Funds_Name  |   VARCHAR(100) |   NO         |   NO|
+     |  3     | Funds_Count  |   INT |   NO         |   NO|
+     |  4     | Purchase_Time  |   DATE |   NO         |   NO|
+     |  5     | Update_Time |   DATE |   NO         |   NO|
+     |  6     | Purchase_Cost |   DOUBLE |   NO         |   NO|
+
+     <font size = 3 ><font color="#87CEFA"><b>ID</b></font> : Identifier in the table.It is primary key in the RECORD</font>
+     
+     <font size = 3 ><font color="#87CEFA"><b>Funds_Name</b></font> : Identifier in the table.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Funds_Count</b></font> : Used to show the count of holding fund.It will change after operation 'BUY' or 'SELL'.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Purchase_Time</b></font> : When the fund was purchased for the first time. </font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Update_Time</b></font> : When the fund was operated for the last time..</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Purchase_Cost</b></font> : The current cost price of buying the fund.</font>
+
+     2.<font size =4>PRODUCT TABLE</font>
+     |  ID    | FIELD NAME   |  FIELD TYPE    |  NOT NUll |      PRIMARY KEY | 
+     |  ----  | ----         |   ----         |   -----     |         ----     |  
+     |  1     | ID       |      INT          |   YES      |    YES|
+     |  2     | Product_ID  |   INT |   NO         |   NO|
+     |  3     | Date_Time  |   DATE |   NO         |   NO|
+     |  4     | Current_Price  |   DOUBLE |   NO         |   NO|
+     |  5     | Growth_Rate |   DOUBLE |   NO         |   NO|
+
+
+     <font size = 3 ><font color="#87CEFA"><b>ID</b></font> : Identifier in the table.</font>
+     
+     <font size = 3 ><font color="#87CEFA"><b>Product_ID</b></font> :This field corresponds to the id in the record table. It is used to associate the relationship between the two tables.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Date_Time</b></font> : The current date of the fund.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Current_Price</b></font> : The price of the fund on date 'Date_Time'.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Growth_Rate</b></font> :The growth rate of the fund on date 'Date_Time'.</font>
+
+    3.<font size =4>OPERATION TABLE</font>
+     |  ID    | FIELD NAME   |  FIELD TYPE    |  NOT NUll |      PRIMARY KEY | 
+     |  ----  | ----         |   ----         |   -----     |         ----     |  
+     |  1     | ID       |      INT          |   YES      |    YES|
+     |  2     | Operation_ProductID  |   INT |   NO         |   NO|
+     |  3     | Operation_Type  |   TINYINT(1) |   NO         |   NO|
+     |  4     | Operation_Time  |   DATE |   NO         |   NO|
+     |  5     | Operation_Count |   DOUBLE |   NO         |   NO|
+     |  6     | Current_Assets  |   DOUBLE |   NO         |   NO|
+
+
+     <font size = 3 ><font color="#87CEFA"><b>ID</b></font> : Identifier in the table.</font>
+     
+     <font size = 3 ><font color="#87CEFA"><b>Operation_ProductID</b></font> :This field corresponds to the id in the record table. It is used to associate the relationship between the two tables.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Operation_Type</b></font> : We use different values 0,1,2,3 to represent different operation types . </font>
+     |  Type  | Description |
+     |  ----  | ----          |  
+     |  0     | BUY           |  
+     |  1     | SELL           |  
+     |  2     | INJECTION           |  
+     |  3     | WITHDRAW           |   
+
+     <font size = 3 ><font color="#87CEFA"><b>Operation_Time</b></font> : The date time of the operation.</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Operation_Count</b></font> :How much is the specific operation. If type is 0,1, it indicates how many funds are operated. type is 3, 4 means how much money was operated</font>
+
+     <font size = 3 ><font color="#87CEFA"><b>Current_Assets</b></font> :Current Assets after operation.</font>
