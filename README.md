@@ -11,7 +11,7 @@
      <font size = 4>Resful API interface available for debugging, and implement basic CRUD functions</font>
 
     &nbsp;
-    # Functional Modules and Diagram Design
+    # <span id = page1>Functional Modules and Diagram Design</span>
     <!-- The information of First Page  -->
     ## 1.Front Page(Information about Assets and Assets Distribution)
      ![page1](page1.png)
@@ -153,3 +153,140 @@
      <font size = 3 ><font color="#87CEFA"><b>Operation_Count</b></font> :How much is the specific operation. If type is 0,1, it indicates how many funds are operated. type is 3, 4 means how much money was operated</font>
 
      <font size = 3 ><font color="#87CEFA"><b>Current_Assets</b></font> :Current Assets after operation.</font>
+
+     # API Design 
+     <font size = 4 >
+     According to the previously designed pages, we design the corresponding API . Then introduce the relevant information of each page in the same format as in the <a href = '#page1'>Functional Modules and Diagram Design</a> module
+     </font>
+     
+     ## 1.Front Page
+
+     <font size = 4 >
+     In this page ,the main function is to show the asset of the user and operate the funds of holding. So the page needs to have some basic functionlity like <font color ="#87CEFA"><b>BUY</b></font>  and <font color ="#87CEFA"><b>SELL</b></font>. We only allow users sell their own funds in this page ,so the purpose of designing first page is used to manage their  property.
+     </font>
+     
+     <font size = 4 >
+     In order to accomplish the functions . The following will show how to connect front-end and back-end by data. 
+     </font>
+ 
+     ## 1) Account Module 
+     ### Used to show the current asset 
+     |     API Address    |   /api/financialinfo/account    |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|show user's Asset  |
+
+     ### Asset Injection
+     |     API Address    |   /api/financialinfo/injection    |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|inject user's asset   |
+
+     ### Asset Withdraw
+     |     API Address    |   /api/financialinfo/withdraw    |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|withdraw user's asset   |
+
+     ## 2) Holding Products Count
+     ### Used to count the number of products held by users
+     |     API Address    |   /api/financialinfo/count   |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|show the count of Holiding Products Count and draw a line chart |
+
+     ## 3) Holding Funds Table
+     ### Display the holding funds and provide <font color = "#87CEFA">BUY</font> and <font color = "#87CEFA">SELL</font> function
+     |     API Address    |   /api/financialinfo/funds   |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|show informations of all of the holding funds   |
+
+     ### Operation : BUY
+     |     API Address    |   /api/financialinfo/buy   |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|show informations of all of the holding funds   |
+
+     ### Operation : SELL
+     |     API Address    |   /api/financialinfo/sell   |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|show informations of all of the holding funds   |
+
+     ## 2.The Profit of Assets Page
+
+     <font size = 4 >
+     In this page ,the main function is to show the profit from funds or every fund.So we not only need to calculate funds' profit but also provide a line chart to show the changes in the returns of a fund over time.
+     </font>
+     
+     <font size = 4 >
+     In order to accomplish the functions . The following will show how to connect front-end and back-end by data. 
+     </font>
+ 
+     ## 1) Profit Display Module 
+     ### Used to show the profit of all funds and every fund 
+     |     API Address    |   /api/product/fundsprofit   |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|show the profits |
+
+     ###  The Line Chart of the Growth Rate
+     |     API Address    |   /api/product/allproducts/{fundsId}  |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|search the growth rate of one fund  by ID |
+     
+
+     ## 3.Product Price Change Monitoring Module
+
+     <font size = 4 >
+     In this page ,the main function is show the price change of the holding funds and unholding funds.
+     </font>
+     
+     <font size = 4 >
+     In order to accomplish the functions . The following will show how to connect front-end and back-end by data. 
+     </font>
+ 
+     ## 1) Profit Display Module 
+     ### Used to show the profit of all funds and every fund 
+     |     API Address    |   /api/financialinfo/funds  |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|get the holding funds list |
+
+     ###  The Line Chart of the Growth Rate
+     |     API Address    |   /api/product/fundsprice  |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|get fund price by searching ID  |
+    
+    ## 4.Market Module
+
+     <font size = 4 >
+     In this page ,the main function is show the information of the all funds.It is a maket , user can buy their funds from there.
+     </font>
+     
+     <font size = 4 >
+     In order to accomplish the functions . The following will show how to connect front-end and back-end by data. 
+     </font>
+ 
+     ## 1) Market Display 
+     ### Used to show the information of the funds
+     |     API Address    |   /api/product/allproducts |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|search the information of funds  by ID |
+     
+
+     ### Search Line Module
+     |     API Address    |   /api/product/allproducts/{fundsId} |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/GET|
+     |Function|get  one fund information by searching ID  |
+
+     ### Operation: BUY
+     |     API Address    |   /api/financialinfo/buy  |
+     |   ------     | :------:  |
+     |Request Method|  HTTP/POST|
+     |Function|Buy funds |
