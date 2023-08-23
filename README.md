@@ -2,7 +2,7 @@
      # Introduction
     <font size = 4>This project is the final project presentation of the 20th team of neuade, and the theme of the project is financial portfolio.</font>
       
-    <font size = 4>We use Augular+SpringBoot+MySQL to manage portfolios of one or more financial products.The basic functionality the project should have.</font>
+    <font size = 4>We use Vue+SpringBoot+MySQL to manage portfolios of one or more financial products.The basic functionality the project should have.</font>
 
     &nbsp;
      # Module Function
