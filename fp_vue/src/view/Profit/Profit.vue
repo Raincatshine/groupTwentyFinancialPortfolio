@@ -95,6 +95,7 @@ export default {
     // 先销毁组件
       this.isReset =false;
       // 更新option
+      this.profitLineOption.title.text ='Profit Line';
       this.profitLineOption.xAxis.data =this.xvalue;
       this.profitLineOption.series[0].data =this.yvalue;
       // 重建组件
